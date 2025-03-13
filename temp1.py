@@ -3,6 +3,9 @@ import math
 import random
 import copy
 
+population_size = 20
+
+
 def fitnessfunction(a, b, c):
     return a + b + c
 
@@ -13,17 +16,17 @@ def getrandomnumber(a,b):
 
 x_all = ["x1","x2","x3","x4","x5","x6","x7","x8"]
 
-Problist_Value = [[0]*2 for _ in range(20)]
-Problist = [[0]*2 for _ in range(20)]
-X_Value = [[0]*8 for _ in range(20)]
-fitnessfunction_X_Value =  [ [0] for _ in range(20) ]
+Problist_Value = [[0]*2 for _ in range(population_size)]
+Problist = [[0]*2 for _ in range(population_size)]
+X_Value = [[0]*8 for _ in range(population_size)]
+fitnessfunction_X_Value =  [ [0] for _ in range(population_size) ]
 
 TotalProb_Value = 0
 Chosen_Prob_Org = 0
 Chosen_Prob = 0
 ans = 9999999
 
-for i in range(20):
+for i in range(population_size):
 
     for k in range(999999999):
         x1 = getrandomnumber(100,10000)
@@ -63,9 +66,9 @@ fitnessfunction_X1_Value = copy.deepcopy(fitnessfunction_X_Value) #計算fitness
 
 print(tabulate(X_Value))
 
-for i in range(1000):
+for i in range(1):
 
-    for i in range(20):
+    for i in range(population_size):
         Problist[i][0] = round(Problist_Value[i][0] / Problist_Value[19][1],10)
         Chosen_Prob += Problist[i][0]
         Problist[i][1] += round(Chosen_Prob,1)
@@ -73,9 +76,9 @@ for i in range(1000):
 
         # ---------輪盤法----------
 
-        circle = [ [ 0 ] * 2 for _ in range(20)]
+        circle = [ [ 0 ] * 2 for _ in range(population_size)]
 
-        for i in range(20):
+        for i in range(population_size):
             
             count = 0
 
@@ -83,7 +86,7 @@ for i in range(1000):
             RandomToComp_base = random.uniform(0,1)
             RandomToComp = round(RandomToComp_base,4)
             
-            for j in range(20):
+            for j in range(population_size):
                 if( Problist[j][1] < RandomToComp ):
                     count+=1
                 elif(Problist[j][1] > RandomToComp):
@@ -91,15 +94,13 @@ for i in range(1000):
                     circle[i][1] = count+1
                     break
 
-        # print(circle)
-
         # ----------輪盤法----------
 
         # ----------交叉----------
 
         crossover_array = []
 
-        for i in range(20):
+        for i in range(population_size):
                 
             RandomToComp = float(format(random.uniform(0,1), '.4f'))
             if(RandomToComp < 0.7):
@@ -108,7 +109,7 @@ for i in range(1000):
                 crossover_array.append(0)
 
         crossover_array1 = []
-        for i in range(20):
+        for i in range(population_size):
             if(crossover_array[i]==1):
                 crossover_array1.append(i)
 
@@ -139,7 +140,7 @@ for i in range(1000):
             X1_Value[crossover_array1[counter2+1]][2] = (1-B)*X_Tmp_Value[crossover_array1[0]][2] + B * X_Tmp_Value[crossover_array1[1]][2]
             counter2 += 2
 
-        for i in range(20):
+        for i in range(population_size):
             X1_Value[i][3] = fitnessfunction(X1_Value[i][0], X1_Value[i][1], X1_Value[i][2])
 
         # print(tabulate(X1_Value,headers=x_all))
@@ -150,7 +151,7 @@ for i in range(1000):
 
         MutationRate = 0.1
 
-        for i in range(20):
+        for i in range(population_size):
             MutationRandom = getrandomnumber(0,1)
 
             if(MutationRandom < MutationRate):
@@ -163,8 +164,8 @@ for i in range(1000):
 
         # ----------突變----------
 
-        for j in range(20):
-            for k in range(20):
+        for j in range(population_size):
+            for k in range(population_size):
                 if (X_Value[j][4]>X1_Value[k][4]):
                     for p in range(5):
                         X_Value[j][p],X1_Value[k][p] = X1_Value[k][p],X_Value[j][p]
