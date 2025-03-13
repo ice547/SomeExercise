@@ -63,7 +63,7 @@ for _ in range(1000):
 
         circle = [ [ 0 ] * 2 for _ in range(20)]
 
-        for i in range(20):
+        for k in range(20):
             
             count = 0
 
